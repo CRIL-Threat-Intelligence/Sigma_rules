@@ -1,0 +1,22 @@
+title: Detection of Suspicious PowerShell and HOSTNAME.EXE Execution Patterns
+id: 37b6e283-73cb-4e62-8e4e-593934ed4b91
+description: Detects PowerShell commands with suspicious parameters and specific patterns in hostname execution that delivers chisel for lateral movement.
+status: experimental
+author: Cyble
+logsource:
+  category: process_creation
+  product: windows
+tags:
+  - attack.execution
+  - attack.scripting
+  - attack.t1086
+detection:
+  selection:
+    Image|endswith: '\HOSTNAME.EXE'
+    ParentImage|endswith: '\powershell.exe'
+    ParentCommandLine|re: '-Wind Hid -ep Bypass -File.*\\Roaming\\Microsoft\\Logs\\Log_\d{4,}\.ps1'
+  condition: selection
+ 
+falsepositives:
+  - Unknown
+level: high
