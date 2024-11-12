@@ -1,4 +1,4 @@
-title: Detection of Suspicious PowerShell and HOSTNAME.EXE Execution Patterns
+title: Detection of Suspicious PowerShell and HOSTNAME.EXE Execution Patterns.
 id: 37b6e283-73cb-4e62-8e4e-593934ed4b91
 description: Detects PowerShell commands with suspicious parameters and specific patterns in hostname execution that delivers chisel for lateral movement.
 status: experimental
