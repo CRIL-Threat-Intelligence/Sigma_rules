@@ -1,0 +1,36 @@
+title: Detection of Suspicious PowerShell.exe Copy and Command Execution  
+id: e94d123c-a5b2-48d9-8c2f-b643c3f9a789
+status: experimental
+description: Detects cmd.exe which tries copy powershell.exe using PSModulePath and executes commands
+author: Cyble
+date: 2024-11-15
+logsource:
+  category: process_creation
+  product: windows
+tags:
+  - attack.execution
+  - attack.t1059.001
+  - attack.t1059.003
+  - attack.t1083
+detection:
+  selection:
+    Image|endswith: '\cmd.exe'
+    CommandLine|contains|all: 
+        -   'PSModulePath'
+        -   'copy'
+        -   'Get-ChildItem'
+        -   'Where-Object'
+        -   'ExpandProperty'
+        -   'AppData\Local\Temp'
+        -   '*.lnk'
+        -   '.exe'
+	-   '.Length'
+
+  filter:
+    CommandLine|contains: 
+        -   '\powershell.exe'
+		
+  condition: selection and not filter
+falsepositives:
+  - Legitimate system administration activities
+level: high
