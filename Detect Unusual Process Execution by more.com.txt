@@ -1,0 +1,23 @@
+title: Detect Unusual Process Execution by more.com
+id: 123e4567-e89b-12d3-a456-426614174001
+description: Detects injected processes spawned by the legitimate more.com
+status: experimental
+author: Your Name
+date: 2024-12-03
+logsource:
+  category: process_creation
+  product: windows
+tags:
+  - attack.defense_evasion
+  - attack.execution
+detection:
+  selection:
+    ParentImage|endswith: 
+      - '\more.com'
+    Image|endswith:
+      - '\explorer.exe'
+      - '\msiexec.exe'
+  condition: selection
+falsepositives:
+  - Unknown  
+level: high
