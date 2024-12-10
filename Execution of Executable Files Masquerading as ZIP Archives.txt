@@ -1,0 +1,32 @@
+title: Execution of Executable Files Masquerading as ZIP Archives
+id: f1ab0a50-877f-46f0-84bb-404bafab2540
+description: Detects the execution of a file with a ZIP extension following its extraction from an archive
+author: Cyble
+date: 2024-12-10
+logsource:
+  category: process_creation
+  product: windows
+tags:
+  - attack.execution
+  - attack.t1059.001
+  - attack.t1059.003
+  - attack.t1140
+  - attack.t1083
+  - attack.t1036
+  
+detection:
+  selection:
+    Image|endswith: 'cmd.exe'
+    CommandLine|contains|all: 
+        -   'cmd.exe'
+        -   'start'
+        -   'Expand-Archive'
+        -   'Get-ChildItem'
+        -   '-Recurse'
+        -   '.zip'
+        -   'C:\ProgramData'
+        -   '-DestinationPath'
+  condition: selection
+falsepositives:
+  - Legitimate use of ZIP files as executables in some specific processes
+level: high
