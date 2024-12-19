@@ -1,0 +1,28 @@
+title: Detect suspicious SSH execution
+id: 0a69234b-8691-40ca-a9c7-b694611a7aa4
+description: Detects suspicious SSH commands
+status: experimental
+author: Cyble
+date: 2024-12-18
+logsource:
+  category: process_creation
+  product: windows
+tags:
+  - attack.defense_evasion
+  - attack.execution
+detection:
+  selection:
+    Image|endswith: '\ssh.exe'
+    CommandLine|contains:
+      - 'ProxyCommand='
+      - 'LocalCommand='
+  cmd_parameter:
+    CommandLine|contains:
+      - 'powershell'
+      - 'mshta'
+      - '=scp'
+      - 'rundll32'
+  condition: selection and cmd_parameter
+falsepositives:
+  - Legitimate system administration activities
+level: high
