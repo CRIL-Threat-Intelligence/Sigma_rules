@@ -1,0 +1,26 @@
+title: Detects DLL SideLoading using wksprt.exe
+id: cff15cc1-8d5c-455d-a0d3-c19b48911433
+status: experimental
+description: Detects DLL SideLoading using wksprt.exe
+author: Cyble
+date: 2025/01/16
+logsource:
+    category: image_load
+    product: windows
+tags:    
+    - attack.defense_evasion
+    - attack.t1574.001
+    - attack.t1574.002
+detection:
+    selection:
+        Image|endswith: '\wksprt.exe'
+        ImageLoaded|endswith: '\iphlpapi.dll'
+    filter_main_legit_path:
+        Image|startswith:
+            - 'C:\Windows\System32\'            
+    filter_main_is_signed:
+        Signed: 'true'
+    condition: selection and not 1 of filter_main_*
+falsepositives:
+    - Unknown
+level: Medium
