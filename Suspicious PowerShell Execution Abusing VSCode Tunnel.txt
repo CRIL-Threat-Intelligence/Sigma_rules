@@ -1,0 +1,28 @@
+title: Suspicious PowerShell Execution Abusing VSCode Tunnel
+id: 8dbb888e-572e-4e24-b12e-1073208da204
+status: experimental
+description: Detects suspicious PowerShell execution that creates a VSCode tunnel and exfiltrates tunnel details to a Telegram bot
+author: Cyble
+date: 2025-03-05
+logsource:
+  category: process_creation
+  product: windows
+tags:  
+  - attack.t1071.001
+  - attack.t1567
+  - attack.t1059.001
+detection:
+  selection:
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains|all: 
+        - 'code.exe'
+        - 'user' 
+        - 'logout'
+        - 'tunnel'
+        - '--random-name'
+        - '--accept-server-license-terms'
+        - 'chatID'
+  condition: selection 
+falsepositives:
+  - Unknown
+level: high

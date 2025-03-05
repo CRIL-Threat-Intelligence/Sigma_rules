@@ -1,0 +1,23 @@
+title: Data Exfiltration Through Chromium Headless Debugging
+id: 3f8a1b2c-45d7-4e89-9f12-67c3d8e5a6b4
+status: experimental
+description: Detects Chromium headless debugging, which could be exploited by threat actors to steal sensitive information
+author: Cyble
+date: 2025-03-05
+logsource:
+  category: process_creation
+  product: windows
+tags:  
+  - attack.T1555.003
+detection:
+  selection:    
+    CommandLine|contains|all: 
+        - '--remote-debugging-port'
+        - '--remote-allow-origins' 
+        - '--headless'
+        - '--user-data-dir'
+  condition: selection 
+falsepositives:
+  - Unknown
+level: high
+
