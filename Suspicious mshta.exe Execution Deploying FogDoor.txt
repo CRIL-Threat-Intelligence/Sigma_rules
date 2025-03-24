@@ -1,0 +1,28 @@
+title: Suspicious mshta.exe Execution Deploying FogDoor
+id: 8dbb888e-572e-4e24-b12e-1073208da204
+status: experimental
+description: Detects suspicious mshta.exe execution that executes FogDoor Backdoor
+author: Cyble
+date: 2025-03-24
+logsource:
+  category: process_creation
+  product: windows
+tags:  
+  - attack.t1059.005
+  - attack.t1102 
+  - attack.t1071.001
+detection:
+  selection:
+    Image|endswith: '\mshta.exe'
+    CommandLine|contains|all:
+      - 'vbscript'
+      - 'WScript.Shell'
+      - '.Run'
+      - '\Public\'
+      - 'SkyWatchWeather.exe'
+	  
+  condition: selection 
+
+falsepositives:
+  - Unknown
+level: high
